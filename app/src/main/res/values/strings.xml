@@ -1,0 +1,108 @@
+<resources>
+    <string name="app_name">BakeryNewApp</string>
+
+    <!-- copy rights -->
+    <string name="copyRight">Copyright \u00a9 And Designed and Developed by</string>
+    <string name="design_developed">Designed and Developed by </string>
+    <string name="company_name">Prolific Technosys.</string>
+
+    <!-- Tab Header Strings -->
+    <string name="nav_header_home">Home</string>
+    <string name="nav_header_generate_order">Generate Order</string>
+    <string name="nav_header_contact_us">Contact Info</string>
+    <string name="nav_header_logout">Logout</string>
+    <string name="nav_header_confirm_order">Confirm Order</string>
+    <string name="txt_separator">:</string>
+    <string name="txt_unit_separator">/</string>
+
+    <!-- Login Strings -->
+    <string name="login_title">Login</string>
+    <string name="login_user_name"> Username</string>
+    <string name="login_user_password"> Password</string>
+    <string name="login_btn">Login</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="title_activity_bottom_navigation">BottomNavigationActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_tab_main">TabMainActivity</string>
+
+    <!-- Scheme Strings -->
+    <string name="scheme_title">Special Offers</string>
+    <string name="scheme_outlet_name">Outlet Name</string>
+    <string name="scheme_item_category_name">Item Category</string>
+    <string name="scheme_item_discount">Item Discount</string>
+    <string name="scheme_item_discount_date">Discount Date</string>
+    <string name="scheme_from_date">From Date</string>
+    <string name="scheme_to_date">To Date</string>
+    <string name="scheme_error">No Schemes Available</string>
+    <string name="scheme_show_msg1">Apply scheme on </string>
+    <string name="scheme_show_msg2">items with </string>
+
+    <!-- Generate Order Strings -->
+    <string name="apply_button">Apply</string>
+    <string name="add_button">Add</string>
+    <string name="item_name">Item Name</string>
+    <string name="item_amount">Item Amount</string>
+    <string name="item_cat_name">Category Name</string>
+    <string name="item_unit_name">Unit Name</string>
+    <string name="item_error">Items Are Not Available</string>
+
+    <!-- Confirm Order Strings -->
+    <string name="continue_ordering_title">Add More Items</string>
+    <string name="get_schemes_title">Get Schemes</string>
+    <string name="guest_name"> Enter Your Name</string>
+    <string name="guest_contact_no"> Enter Your Mobile No.</string>
+    <string name="guest_address"> Enter Your Address</string>
+    <string name="order_date"> Date</string>
+    <string name="order_time"> Time</string>
+    <string name="order_id"> Order Id </string>
+    <string name="total_quantity"> Total Items </string>
+    <string name="total_amount"> Total Amount </string>
+    <string name="order_temp_btn"> Temp Bill </string>
+
+    <string name="confirmation_dialog_title">Confirm Your Order</string>
+    <string name="confirmation_dialog_msg">Do You Want To Confirm Your Order?</string>
+    <string name="confirmation_dialog_yes">Yes</string>
+    <string name="confirmation_dialog_no">No</string>
+
+    <string name="payment_mode_cash">Cash</string>
+    <string name="payment_mode_card">Card</string>
+    <string name="payment_mode_online">Online Payment</string>
+
+    <string name="tip_message"> * After clicking on Get Scheme button you will
+    not able to Add / Edit any items</string>
+    <string name="order_done_title">Order Placed Successfully.!!</string>
+
+    <!-- Sell String -->
+    <string name="sell_title">Sell Report</string>
+    <string name="sell_date">Select Date</string>
+    <string name="sell_daily_bill_count">Daily Bill Count</string>
+    <string name="sell_total_amount">Daily Total Sell Amount</string>
+    <string name="sell_total_amount_cash">Total Cash Sell</string>
+    <string name="sell_total_amount_card">Total Card Sell</string>
+    <string name="sell_total_amount_online_payment">Total Online Payment Sell</string>
+    <string name="sell_search_button">Search</string>
+    <string name="rs">\u20B9</string>
+
+    <!-- Tab Strings -->
+    <string name="tab_text_item">Items</string>
+    <string name="tab_text_contact">Contact Info</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_navigation_drawer">Home</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+</resources>

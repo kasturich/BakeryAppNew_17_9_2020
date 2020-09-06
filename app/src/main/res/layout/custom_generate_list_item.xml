@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/light_grey">
+
+    <LinearLayout
+        android:id="@+id/mainLinear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:id="@+id/detailsRelative"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2">
+
+            <RelativeLayout
+                android:id="@+id/errorRelative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/txtError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/dark_brown"
+                    android:text="@string/item_error">
+
+                </TextView>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/outletDetailsRelative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtItemName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/dark_brown">
+
+                </TextView>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/itemCategoryDetailsRelative"
+                android:layout_below="@+id/outletDetailsRelative"
+                android:layout_marginTop="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtItemCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/dark_brown"
+                    android:textSize="12sp">
+
+                </TextView>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/itemDiscountDetailsRelative"
+                android:layout_below="@+id/itemCategoryDetailsRelative"
+                android:layout_marginTop="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtItemAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/dark_brown">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/txtItemDiscountSeparator"
+                    android:layout_toEndOf="@+id/txtItemAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/dark_brown"
+                    android:text="@string/txt_unit_separator">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/txtItemUnit"
+                    android:layout_toEndOf="@+id/txtItemDiscountSeparator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/dark_brown"
+                    android:textSize="12sp">
+
+                </TextView>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/addButtonRelative"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8">
+
+            <TextView
+                android:id="@+id/txtAddButton"
+                android:gravity="center"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:text="@string/add_button"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                android:background="@color/dark_brown">
+
+            </TextView>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

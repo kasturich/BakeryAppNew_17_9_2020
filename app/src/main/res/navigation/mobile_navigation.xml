@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.mi5.bakeryappnew.fragment.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_generate_order"
+        android:name="com.mi5.bakeryappnew.fragment.GenerateOrderNewFragment"
+        android:label="@string/nav_header_generate_order"
+        tools:layout="@layout/fragment_generate_order" />
+
+    <!--<fragment
+        android:id="@+id/nav_contact_info"
+        android:name="com.mi5.bakeryappnew.fragment.ContactInformationFragment"
+        android:label="@string/nav_header_contact_us"
+        tools:layout="@layout/fragment_contact_information" />-->
+
+    <fragment
+        android:id="@+id/nav_confirm_order"
+        android:name="com.mi5.bakeryappnew.fragment.ConfirmOrderNewFragment"
+        android:label="@string/nav_header_confirm_order"
+        tools:layout="@layout/fragment_confirm_order" />
+
+</navigation>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/light_grey">
+
+    <LinearLayout
+        android:id="@+id/mainLinear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:id="@+id/schemeDetailsRelative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/txtSchemeMessage1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/dark_brown"
+                android:text="@string/scheme_show_msg1">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtItemCategory"
+                android:layout_toEndOf="@+id/txtSchemeMessage1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/dark_brown">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtSchemeMessage2"
+                android:layout_toEndOf="@+id/txtItemCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:text="@string/scheme_show_msg2"
+                android:textColor="@color/dark_brown">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtSchemeAmount"
+                android:layout_toEndOf="@+id/txtSchemeMessage2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/dark_brown">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtSchemeId"
+                android:layout_toEndOf="@+id/txtSchemeAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:visibility="visible"
+                android:textColor="@color/dark_brown">
+
+            </TextView>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

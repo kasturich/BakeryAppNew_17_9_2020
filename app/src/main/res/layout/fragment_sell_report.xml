@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".fragment.SellReportFragment">
+
+    <RelativeLayout
+        android:id="@+id/mainRelative"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:id="@+id/dateRelative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="@color/light_grey">
+
+            <TextView
+                android:id="@+id/txtDateTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_marginStart="5dp"
+                android:text="@string/sell_date"
+                android:textSize="13sp">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtDateSeparator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/txtDateTitle"
+                android:layout_marginStart="5dp"
+                android:padding="5dp"
+                android:text="@string/txt_separator"
+                android:textSize="13sp">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtSellDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/txtDateSeparator"
+                android:layout_marginStart="5dp"
+                android:padding="5dp"
+                android:hint="@string/sell_date"
+                android:textSize="13sp">
+
+            </TextView>
+
+            <RelativeLayout
+                android:id="@+id/searchButtonRelative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtDateTitle"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:id="@+id/txtSearchButton"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:background="@color/dark_brown"
+                    android:gravity="center"
+                    android:layout_marginEnd="10dp"
+                    android:padding="10dp"
+                    android:text="@string/sell_search_button"
+                    android:textColor="@color/white"
+                    android:textSize="13sp">
+
+                </TextView>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/reportDetailsRelative"
+            android:layout_below="@+id/dateRelative"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/dailyBillCountRelative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtDailyBillCountTitle"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_marginStart="5dp"
+                    android:text="@string/sell_daily_bill_count"
+                    android:textSize="13sp">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/txtDailyBillCountSeparator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/txtDailyBillCountTitle"
+                    android:layout_marginStart="5dp"
+                    android:padding="5dp"
+                    android:text="@string/txt_separator"
+                    android:textSize="13sp">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/txtDailyBillCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/txtDailyBillCountSeparator"
+                    android:layout_marginStart="5dp"
+                    android:padding="5dp"
+                    android:textColor="@color/dark_brown"
+                    android:text="@string/sell_daily_bill_count"
+                    android:textStyle="bold"
+                    android:textSize="13sp">
+
+                </TextView>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/totalAmountRelative"
+                android:layout_below="@+id/dailyBillCountRelative"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtTotalAmountTitle"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_marginStart="5dp"
+                    android:text="@string/sell_total_amount"
+                    android:textSize="13sp">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/txtTotalAmountSeparator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/txtTotalAmountTitle"
+                    android:layout_marginStart="5dp"
+                    android:padding="5dp"
+                    android:text="@string/txt_separator"
+                    android:textSize="13sp">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/txtTotalAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/txtTotalAmountSeparator"
+                    android:layout_marginStart="5dp"
+                    android:padding="5dp"
+                    android:textColor="@color/dark_brown"
+                    android:text="@string/sell_total_amount"
+                    android:textStyle="bold"
+                    android:textSize="13sp">
+
+                </TextView>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/totalCashAmountRelative"
+                android:layout_below="@+id/totalAmountRelative"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtTotalCashAmountTitle"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_marginStart="5dp"
+                    android:text="@string/sell_total_amount_cash"
+                    android:textSize="13sp">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/txtTotalCashAmountSeparator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/txtTotalCashAmountTitle"
+                    android:layout_marginStart="5dp"
+                    android:padding="5dp"
+                    android:text="@string/txt_separator"
+                    android:textSize="13sp">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/txtTotalCashAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/txtTotalCashAmountSeparator"
+                    android:layout_marginStart="5dp"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_brown"
+                    android:text="@string/sell_total_amount_cash"
+                    android:textSize="13sp">
+
+                </TextView>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/totalCardAmountRelative"
+                android:layout_below="@+id/totalCashAmountRelative"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtTotalCardAmountTitle"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_marginStart="5dp"
+                    android:text="@string/sell_total_amount_card"
+                    android:textSize="13sp">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/txtTotalCardAmountSeparator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/txtTotalCardAmountTitle"
+                    android:layout_marginStart="5dp"
+                    android:padding="5dp"
+                    android:text="@string/txt_separator"
+                    android:textSize="13sp">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/txtTotalCardAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/txtTotalCardAmountSeparator"
+                    android:layout_marginStart="5dp"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_brown"
+                    android:text="@string/sell_total_amount_card"
+                    android:textSize="13sp">
+
+                </TextView>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/totalOnlinePaymentAmountRelative"
+                android:layout_below="@+id/totalCardAmountRelative"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtTotalOnlinePaymentAmountTitle"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_marginStart="5dp"
+                    android:text="@string/sell_total_amount_online_payment"
+                    android:textSize="13sp">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/txtTotalOnlinePaymentAmountSeparator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/txtTotalOnlinePaymentAmountTitle"
+                    android:layout_marginStart="5dp"
+                    android:padding="5dp"
+                    android:text="@string/txt_separator"
+                    android:textSize="13sp">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/txtTotalOnlinePaymentAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/txtTotalOnlinePaymentAmountSeparator"
+                    android:layout_marginStart="5dp"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_brown"
+                    android:text="@string/sell_total_amount_online_payment"
+                    android:textSize="13sp">
+
+                </TextView>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>

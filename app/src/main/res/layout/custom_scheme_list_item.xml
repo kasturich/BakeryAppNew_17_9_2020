@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/light_grey">
+
+    <LinearLayout
+        android:id="@+id/mainLinear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:id="@+id/errorRelative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/txtError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/dark_brown"
+                android:text="@string/scheme_error">
+
+            </TextView>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/outletDetailsRelative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/txtOutletNameTitle"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/dark_brown"
+                android:text="@string/scheme_outlet_name">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtOutletSeparator"
+                android:layout_toEndOf="@+id/txtOutletNameTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/dark_brown"
+                android:text="@string/txt_separator">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtOutletName"
+                android:layout_toEndOf="@+id/txtOutletSeparator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/dark_brown">
+
+            </TextView>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/itemCategoryDetailsRelative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtItemCategoryTitle"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/dark_brown"
+                android:text="@string/scheme_item_category_name">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtItemCategorySeparator"
+                android:layout_toEndOf="@+id/txtItemCategoryTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/dark_brown"
+                android:text="@string/txt_separator">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtItemCategory"
+                android:layout_toEndOf="@+id/txtItemCategorySeparator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textColor="@color/dark_brown"
+                android:textSize="12sp">
+
+            </TextView>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/itemDiscountDetailsRelative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtItemDiscountTitle"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/dark_brown"
+                android:text="@string/scheme_item_discount">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtItemDiscountSeparator"
+                android:layout_toEndOf="@+id/txtItemDiscountTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/dark_brown"
+                android:text="@string/txt_separator">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtItemDiscount"
+                android:layout_toEndOf="@+id/txtItemDiscountSeparator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textColor="@color/dark_brown"
+                android:textSize="12sp">
+
+            </TextView>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/discountDateRelative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtDiscountDateTitle"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/dark_brown"
+                android:text="@string/scheme_item_discount_date">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtDiscountDateSeparator"
+                android:layout_toEndOf="@+id/txtDiscountDateTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/dark_brown"
+                android:text="@string/txt_separator">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtDiscountFromDate"
+                android:layout_toEndOf="@+id/txtDiscountDateSeparator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textColor="@color/dark_brown"
+                android:textSize="12sp">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtDiscountDateSeparator2"
+                android:layout_toEndOf="@+id/txtDiscountFromDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/dark_brown"
+                android:text="-">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtDiscountToDate"
+                android:layout_toEndOf="@+id/txtDiscountDateSeparator2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textColor="@color/dark_brown"
+                android:textSize="12sp">
+
+            </TextView>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

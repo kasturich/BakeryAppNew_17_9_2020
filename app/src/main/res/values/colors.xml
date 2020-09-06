@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/dark_brown</color>
+    <color name="colorPrimaryDark">@color/light_brown</color>
+    <color name="colorAccent">@color/light_brown</color>
+    <color name="windowBackground">#FFFFFF</color>
+    <color name="navigationBarColor">#000000</color>
+
+    <color name="full_transparent_color">#0fff</color>
+    <color name="full_transparent_black_color">#66000000 </color>
+    <color name="brown">#c1a067</color>
+    <color name="light_brown">#e5bf8e</color>
+    <color name="more_light_brown">#f4f2cb</color>
+    <color name="dark_brown">#7b5230</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="horizontal_line">#b7b6b6</color>
+    <color name="edit_text_border">#ededed</color>
+    <color name="light_grey">#f7f7f7</color>
+    <color name="red">#CC0000</color>
+    <color name="edittext_border">#444</color>
+    <color name="navigation_bar">@color/light_brown</color>
+</resources>
+
