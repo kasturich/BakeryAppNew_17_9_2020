@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.ViewTodaySellFragment">
+
+    <RelativeLayout
+        android:id="@+id/mainRelative"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:id="@+id/dateRelative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="@color/light_grey">
+
+            <TextView
+                android:id="@+id/txtDateTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_marginStart="5dp"
+                android:text="@string/sell_date"
+                android:textSize="13sp">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtDateSeparator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/txtDateTitle"
+                android:layout_marginStart="5dp"
+                android:padding="5dp"
+                android:text="@string/txt_separator"
+                android:textSize="13sp">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtSellDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/txtDateSeparator"
+                android:layout_marginStart="5dp"
+                android:padding="5dp"
+                android:hint="@string/sell_date"
+                android:textSize="13sp">
+
+            </TextView>
+
+            <RelativeLayout
+                android:id="@+id/searchButtonRelative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtDateTitle"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:id="@+id/txtSearchButton"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:background="@color/dark_brown"
+                    android:gravity="center"
+                    android:layout_marginEnd="10dp"
+                    android:padding="10dp"
+                    android:text="@string/sell_search_button"
+                    android:textColor="@color/white"
+                    android:textSize="13sp">
+
+                </TextView>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/reportDetailsRelative"
+            android:layout_below="@+id/dateRelative"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/sellReportListView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                style="@style/applicationTheme">
+
+            </ListView>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>

@@ -2,7 +2,6 @@ package com.mi5.bakeryappnew.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -17,13 +16,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mi5.bakeryappnew.R;
 import com.mi5.bakeryappnew.activity.NavigationDrawerActivity;
-import com.mi5.bakeryappnew.database.MyDBHandler;
+import com.mi5.bakeryappnew.adapter.SellReportItemAdapter;
 import com.mi5.bakeryappnew.model.SellReportDetails;
+import com.mi5.bakeryappnew.model.SellReportItemDetails;
 import com.mi5.bakeryappnew.other.DateDialogFragment;
 import com.mi5.bakeryappnew.utility.UrlStrings;
 
@@ -42,13 +43,11 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SellReportFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SellReportFragment#newInstance} factory method to
+ * Use the {@link ViewTodaySellFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SellReportFragment extends Fragment {
+public class ViewTodaySellFragment extends Fragment {
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -58,19 +57,8 @@ public class SellReportFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    TextView txtSellDate, txtDateTitle, txtSearchButton, txtDailyBillCount;
-    TextView txtTotalAmount, txtTotalCashAmount, txtTotalCardAmount, txtTotalOnlinePaymentAmount;
-
-    Double totalAmount = 0.0, totalCashAmount =0.0,
-            totalCardAmount =0.0, totalOnlinePayment=0.0;
-
-    //MyDBHandler db;
-
-    SellReportDetails sellReportDetails;
-    List<SellReportDetails> sellReportDetailsList;
-
-    String colored = "*";
-    SpannableStringBuilder builderDate;
+    TextView txtSellDate, txtDateTitle, txtSearchButton;
+    ListView sellReportListView;
 
     boolean serverConnection=false;
     SharedPreferences sharedpreferences;
@@ -78,10 +66,16 @@ public class SellReportFragment extends Fragment {
 
     String companyId, outletId, jsonSharedPreference, strSellDate;
     SoapObject response;
+    String colored = "*";
+    SpannableStringBuilder builderDate;
 
-    private OnFragmentInteractionListener mListener;
+    SellReportItemDetails sellReportItemDetails;
+    List<SellReportItemDetails> sellReportItemDetailsList;
+    SellReportItemAdapter sellReportItemAdapter;
 
-    public SellReportFragment() {
+    private SchemeDetailsFragment.OnFragmentInteractionListener mListener;
+
+    public ViewTodaySellFragment() {
         // Required empty public constructor
     }
 
@@ -91,11 +85,11 @@ public class SellReportFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SellReportFragment.
+     * @return A new instance of fragment ViewTodaySellFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SellReportFragment newInstance(String param1, String param2) {
-        SellReportFragment fragment = new SellReportFragment();
+    public static ViewTodaySellFragment newInstance(String param1, String param2) {
+        ViewTodaySellFragment fragment = new ViewTodaySellFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -116,19 +110,15 @@ public class SellReportFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_sell_report, container, false);
+        View view = inflater.inflate(R.layout.fragment_view_today_sell, container, false);
 
         ((NavigationDrawerActivity) getActivity()).getSupportActionBar()
                 .setTitle(getResources().getString(R.string.sell_title));
 
         txtSellDate = view.findViewById(R.id.txtSellDate);
         txtDateTitle = view.findViewById(R.id.txtDateTitle);
-        txtDailyBillCount = view.findViewById(R.id.txtDailyBillCount);
         txtSearchButton = view.findViewById(R.id.txtSearchButton);
-        txtTotalAmount = view.findViewById(R.id.txtTotalAmount);
-        txtTotalCashAmount = view.findViewById(R.id.txtTotalCashAmount);
-        txtTotalCardAmount = view.findViewById(R.id.txtTotalCardAmount);
-        txtTotalOnlinePaymentAmount = view.findViewById(R.id.txtTotalOnlinePaymentAmount);
+        sellReportListView = view.findViewById(R.id.sellReportListView);
 
         sharedpreferences = getActivity().getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
 
@@ -158,6 +148,8 @@ public class SellReportFragment extends Fragment {
             }
         }
 
+        sellReportItemDetailsList = new ArrayList<SellReportItemDetails>();
+
         builderDate = new SpannableStringBuilder();
 
         builderDate.append(getResources().getString(R.string.sell_date));
@@ -168,8 +160,6 @@ public class SellReportFragment extends Fragment {
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         txtDateTitle.setText(builderDate);
 
-        sellReportDetailsList = new ArrayList<SellReportDetails>();
-
         txtSellDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -178,14 +168,6 @@ public class SellReportFragment extends Fragment {
                 dateDialogFragment.show(getActivity().getFragmentManager(), "Date Picker");
             }
         });
-
-        //db = new MyDBHandler(getActivity().getApplicationContext());
-
-        txtDailyBillCount.setText("0");
-        txtTotalAmount.setText("0.0");
-        txtTotalCashAmount.setText("0.0");
-        txtTotalCardAmount.setText("0.0");
-        txtTotalOnlinePaymentAmount.setText("0.0");
 
         txtSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,12 +181,7 @@ public class SellReportFragment extends Fragment {
                     }
                     else
                     {
-                        totalAmount = 0.0;
-                        totalCashAmount =0.0;
-                        totalCardAmount =0.0;
-                        totalOnlinePayment=0.0;
-
-                        sellReportDetailsList.clear();
+                        sellReportItemDetailsList.clear();
 
                         String dArray[] = txtSellDate.getText().toString().split("/");
                         int d = Integer.parseInt(dArray[0]);
@@ -265,56 +242,28 @@ public class SellReportFragment extends Fragment {
                 }
                 else {
                     serverConnection = false;
-                    String strUnitResponse = response.getProperty("DateWiseSales_DetailsResult").toString();
+                    String strUnitResponse = response.getProperty("Sales_Details_NewResult").toString();
 
                     JSONArray jarray = new JSONArray(strUnitResponse);
 
                     for (int i=0; i<jarray.length(); i++)
                     {
-                        sellReportDetails = new SellReportDetails(
+                        sellReportItemDetails = new SellReportItemDetails(
                                 jarray.getJSONObject(i).getString("OutletId"),
-                                jarray.getJSONObject(i).getString("DailyBillAmount"),
+                                jarray.getJSONObject(i).getString("OrderId"),
                                 jarray.getJSONObject(i).getString("FinalBillAmount"),
-                                jarray.getJSONObject(i).getString("TotalDailyDiscount"),
-                                jarray.getJSONObject(i).getString("TotalOnlinePayment"),
-                                jarray.getJSONObject(i).getString("TotalCashPayment"),
-                                jarray.getJSONObject(i).getString("TotalCardPayment"),
-                                jarray.getJSONObject(i).getString("DailyBillCount"),
                                 jarray.getJSONObject(i).getString("msg"),
                                 jarray.getJSONObject(i).getString("PaymentType"));
-                        sellReportDetailsList.add(sellReportDetails);
+                        sellReportItemDetailsList.add(sellReportItemDetails);
                     }
-                    boolean isInserted = false;
 
                     System.out.println("sell list size = "
-                            + sellReportDetailsList.size());
+                            + sellReportItemDetailsList.size());
 
-                    for(int j=0; j<sellReportDetailsList.size(); j++)
-                    {
-                        if (sellReportDetailsList.get(j).getMsg().equals("1")) {
-
-                            txtDailyBillCount.setText(sellReportDetailsList.get(j).getDailyBillCount());
-
-                            txtTotalAmount.setText(sellReportDetailsList.get(j).getFinalBillAmount()
-                                    + " " + getResources().getString(R.string.rs));
-
-                            txtTotalCashAmount.setText(sellReportDetailsList.get(j).getTotalCashPayment()
-                                    + " " + getResources().getString(R.string.rs));
-
-                            txtTotalCardAmount.setText(sellReportDetailsList.get(j).getTotalCardPayment()
-                                    + " " + getResources().getString(R.string.rs));
-
-                            txtTotalOnlinePaymentAmount.setText(sellReportDetailsList.get(j).getTotalOnlinePayment()
-                                    + " " + getResources().getString(R.string.rs));
-
-                        }
-                        else
-                        {
-                            Toast.makeText(getActivity().getApplicationContext(),
-                                    "",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                    sellReportItemAdapter = new SellReportItemAdapter(getActivity().getApplicationContext(),
+                            sellReportItemDetailsList);
+                    sellReportItemAdapter.notifyDataSetChanged();
+                    sellReportListView.setAdapter(sellReportItemAdapter);
                 }
             }
             catch (Exception e)
@@ -326,8 +275,8 @@ public class SellReportFragment extends Fragment {
 
     public void downloadSellReport(String selectedDate)
     {
-        String METHOD_NAME = "DateWiseSales_Details";
-        String SOAP_ACTION = UrlStrings.NAMESPACE+"DateWiseSales_Details";
+        String METHOD_NAME = "Sales_Details_New";
+        String SOAP_ACTION = UrlStrings.NAMESPACE+"Sales_Details_New";
 
         System.out.println("Soap action = " + SOAP_ACTION);
         System.out.println("url = " + UrlStrings.URL);
@@ -383,7 +332,7 @@ public class SellReportFragment extends Fragment {
                 serverConnection = false;
                 response = (SoapObject) envelope.bodyIn;
                 //Log.d("response property" , response.getProperty("LoginResult").toString());
-                Log.d("response property" , response.getProperty("DateWiseSales_DetailsResult").toString());
+                Log.d("response property" , response.getProperty("Sales_Details_NewResult").toString());
                 Log.d("WS", response.toString());
             }
         }
@@ -400,106 +349,11 @@ public class SellReportFragment extends Fragment {
     }
 
 
-    /*public void getSellReport()
-    {
-        try {
-            Cursor res = db.getSellRecordFromDate(txtSellDate.getText().toString());
-
-            if(res.getCount() == 0) {
-                // show message
-                Toast.makeText(getActivity().getApplicationContext(),
-                        "No Data Available", Toast.LENGTH_SHORT).show();
-                //return;
-
-                txtTotalAmount.setText(String.valueOf(totalAmount)
-                        + " " + getResources().getString(R.string.rs));
-                txtTotalCashAmount.setText(String.valueOf(totalCashAmount)
-                        + " " + getResources().getString(R.string.rs));
-                txtTotalCardAmount.setText(String.valueOf(totalCardAmount)
-                        + " " + getResources().getString(R.string.rs));
-                txtTotalOnlinePaymentAmount.setText(String.valueOf(totalOnlinePayment)
-                        + " " + getResources().getString(R.string.rs));
-            }
-
-            while(res.moveToNext())
-            {
-                sellReportDetails = new SellReportDetails(
-                        res.getString(1),
-                        res.getString(4),
-                        res.getString(5),
-                        res.getString(11),
-                        res.getString(15)
-                );
-
-                sellReportDetailsList.add(sellReportDetails);
-            }
-
-            System.out.println("sell report list " + sellReportDetailsList.size());
-
-            totalAmount = 0.0;
-            totalCashAmount =0.0;
-            totalCardAmount =0.0;
-            totalOnlinePayment=0.0;
-
-            for (int i=0; i<sellReportDetailsList.size(); i++)
-            {
-                totalAmount = totalAmount +
-                        Double.parseDouble(sellReportDetailsList.get(i).getTotalAmount());
-
-                if(sellReportDetailsList.get(i).getPaymentMode().equals(
-                        getResources().getString(R.string.payment_mode_cash)))
-                {
-                    totalCashAmount = totalCashAmount +
-                            Double.parseDouble(sellReportDetailsList.get(i).getTotalAmount());
-                }
-
-                if(sellReportDetailsList.get(i).getPaymentMode().equals(
-                        getResources().getString(R.string.payment_mode_card)))
-                {
-                    totalCardAmount = totalCardAmount +
-                            Double.parseDouble(sellReportDetailsList.get(i).getTotalAmount());
-                }
-
-                if(sellReportDetailsList.get(i).getPaymentMode().equals(
-                        getResources().getString(R.string.payment_mode_online)))
-                {
-                    totalOnlinePayment = totalOnlinePayment +
-                            Double.parseDouble(sellReportDetailsList.get(i).getTotalAmount());
-                }
-            }
-
-            System.out.println("total sell Amount "+ totalAmount);
-            System.out.println("total cash sell Amount "+ totalCashAmount);
-            System.out.println("total card sell Amount "+ totalCardAmount);
-            System.out.println("total online payment sell Amount "+ totalOnlinePayment);
-
-            txtTotalAmount.setText(String.valueOf(totalAmount)
-                    + " " + getResources().getString(R.string.rs));
-            txtTotalCashAmount.setText(String.valueOf(totalCashAmount)
-                    + " " + getResources().getString(R.string.rs));
-            txtTotalCardAmount.setText(String.valueOf(totalCardAmount)
-                    + " " + getResources().getString(R.string.rs));
-            txtTotalOnlinePaymentAmount.setText(String.valueOf(totalOnlinePayment)
-                    + " " + getResources().getString(R.string.rs));
-        }
-        catch (Exception e)
-        {
-            e.getMessage();
-        }
-    }*/
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof SchemeDetailsFragment.OnFragmentInteractionListener) {
+            mListener = (SchemeDetailsFragment.OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");

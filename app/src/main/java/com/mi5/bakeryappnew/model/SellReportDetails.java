@@ -3,12 +3,12 @@ package com.mi5.bakeryappnew.model;
 public class SellReportDetails {
 
     public String outletId, DailyBillAmount, FinalBillAmount, TotalDailyDiscount, TotalOnlinePayment,
-            TotalCashPayment, TotalCardPayment, DailyBillCount, msg;
+            TotalCashPayment, TotalCardPayment, DailyBillCount, msg, PaymentType;
 
     public SellReportDetails(String outletId, String DailyBillAmount, String FinalBillAmount,
                              String TotalDailyDiscount, String TotalOnlinePayment,
                              String TotalCashPayment, String TotalCardPayment,
-                             String DailyBillCount, String msg)
+                             String DailyBillCount, String msg, String PaymentType)
     {
         this.outletId = outletId;
         this.DailyBillAmount = DailyBillAmount;
@@ -19,6 +19,15 @@ public class SellReportDetails {
         this.TotalCardPayment = TotalCardPayment;
         this.DailyBillCount = DailyBillCount;
         this.msg = msg;
+        this.PaymentType = PaymentType;
+    }
+
+    public String getPaymentType() {
+        return PaymentType;
+    }
+
+    public void setPaymentType(String paymentType) {
+        PaymentType = paymentType;
     }
 
     public String getOutletId() {

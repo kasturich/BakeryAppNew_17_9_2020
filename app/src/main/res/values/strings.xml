@@ -83,6 +83,8 @@
     <string name="sell_total_amount_card">Total Card Sell</string>
     <string name="sell_total_amount_online_payment">Total Online Payment Sell</string>
     <string name="sell_search_button">Search</string>
+    <string name="sell_payment_type">Payment By</string>
+    <string name="sell_total_order_amount">Total Amount</string>
     <string name="rs">\u20B9</string>
 
     <!-- Tab Strings -->

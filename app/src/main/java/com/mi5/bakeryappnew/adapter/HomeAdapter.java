@@ -23,6 +23,7 @@ import com.mi5.bakeryappnew.fragment.GenerateOrderFragment;
 import com.mi5.bakeryappnew.fragment.GenerateOrderNewFragment;
 import com.mi5.bakeryappnew.fragment.SchemeDetailsFragment;
 import com.mi5.bakeryappnew.fragment.SellReportFragment;
+import com.mi5.bakeryappnew.fragment.ViewTodaySellFragment;
 import com.mi5.bakeryappnew.model.GridModel;
 import com.mi5.bakeryappnew.model.SchemeDetails;
 
@@ -167,7 +168,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
                     case 2:
                         //intent =  new Intent(mContext, SecondActivity.class);
-                        fragment = new SellReportFragment();
+                        //fragment = new SellReportFragment();
+                        fragment = new ViewTodaySellFragment();
                         activity.getFragmentManager().beginTransaction()
                                 .addToBackStack(null)
                                 .commit();

@@ -34,6 +34,7 @@ import com.mi5.bakeryappnew.fragment.HomeFragment;
 import com.mi5.bakeryappnew.fragment.OrderDoneFragment;
 import com.mi5.bakeryappnew.fragment.SchemeDetailsFragment;
 import com.mi5.bakeryappnew.fragment.SellReportFragment;
+import com.mi5.bakeryappnew.fragment.ViewTodaySellFragment;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -57,7 +58,8 @@ public class NavigationDrawerActivity extends AppCompatActivity
         SellReportFragment.OnFragmentInteractionListener,
         GenerateOrderNewFragment.OnFragmentInteractionListener,
         ConfirmOrderNewFragment.OnFragmentInteractionListener,
-        OrderDoneFragment.OnFragmentInteractionListener{
+        OrderDoneFragment.OnFragmentInteractionListener,
+        ViewTodaySellFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 
