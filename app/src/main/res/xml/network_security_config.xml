@@ -7,5 +7,6 @@
     </base-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">bakery.erplivedemo.com/</domain>
+        <domain includeSubdomains="true">bmstest.erplivedemo.com/</domain>
     </domain-config>
 </network-security-config>

@@ -23,7 +23,7 @@ public class SellReportItemAdapter extends BaseAdapter
 
     SellReportItemDetails sellReportDetails;
     List<SellReportItemDetails> sellReportDetailsList;
-    int srNo=0;
+    static int srNo=0;
 
     public SellReportItemAdapter(Context context, List<SellReportItemDetails> sellReportDetailsList)
     {
@@ -80,7 +80,7 @@ public class SellReportItemAdapter extends BaseAdapter
             bottomRelative.setVisibility(View.VISIBLE);
             countLinear.setVisibility(View.VISIBLE);
 
-            txtOrderCount.setText(String.valueOf(srNo));
+            txtOrderCount.setText(String.valueOf(position+1));
             txtTotalOrderAmount.setText(sellReportDetails.getFinalBillAmount() + " "
                     + mContext.getResources().getString(R.string.rs));
             txtPaymentMode.setText(sellReportDetails.getPaymentType());

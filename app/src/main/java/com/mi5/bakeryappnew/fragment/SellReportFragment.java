@@ -123,8 +123,8 @@ public class SellReportFragment extends Fragment {
 
         txtSellDate = view.findViewById(R.id.txtSellDate);
         txtDateTitle = view.findViewById(R.id.txtDateTitle);
-        txtDailyBillCount = view.findViewById(R.id.txtDailyBillCount);
         txtSearchButton = view.findViewById(R.id.txtSearchButton);
+        txtDailyBillCount = view.findViewById(R.id.txtDailyBillCount);
         txtTotalAmount = view.findViewById(R.id.txtTotalAmount);
         txtTotalCashAmount = view.findViewById(R.id.txtTotalCashAmount);
         txtTotalCardAmount = view.findViewById(R.id.txtTotalCardAmount);

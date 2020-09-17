@@ -80,7 +80,9 @@ public class NavigationDrawerActivity extends AppCompatActivity
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        toolbar.setTitle(getResources().getString(R.string.nav_header_home));
+        //toolbar.setTitle(getResources().getString(R.string.nav_header_home));
+
+        getSupportActionBar().setTitle(getResources().getString(R.string.menu_home));
 
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);

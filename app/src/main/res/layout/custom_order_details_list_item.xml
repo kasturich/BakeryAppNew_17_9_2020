@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/mainRelative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/light_grey">
+
+        <RelativeLayout
+            android:id="@+id/itemNameRelative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtItemNameTitle"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:text="@string/item_name"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/black">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtItemNameSeparator"
+                android:layout_toEndOf="@+id/txtItemNameTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_separator"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/black">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtItemName"
+                android:layout_toEndOf="@+id/txtItemNameSeparator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/item_name"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/black">
+
+            </TextView>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/itemQuantityRelative"
+            android:layout_below="@+id/itemNameRelative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtItemQuantityTitle"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:text="@string/item_quantity"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/black">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtItemQuantitySeparator"
+                android:layout_toEndOf="@+id/txtItemQuantityTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_separator"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/black">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtItemQuantity"
+                android:layout_toEndOf="@+id/txtItemQuantitySeparator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/item_quantity"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/black">
+
+            </TextView>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/itemAmountRelative"
+            android:layout_below="@+id/itemQuantityRelative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtItemAmountTitle"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:text="@string/item_amount"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/black">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtItemAmountSeparator"
+                android:layout_toEndOf="@+id/txtItemAmountTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_separator"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/black">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtItemAmount"
+                android:layout_toEndOf="@+id/txtItemAmountSeparator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/item_amount"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/black">
+
+            </TextView>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

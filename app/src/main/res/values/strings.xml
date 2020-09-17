@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BakeryNewApp</string>
+    <string name="app_name">Khaki Bakery</string>
 
     <!-- copy rights -->
     <string name="copyRight">Copyright \u00a9 And Designed and Developed by</string>
@@ -43,6 +43,7 @@
     <string name="apply_button">Apply</string>
     <string name="add_button">Add</string>
     <string name="item_name">Item Name</string>
+    <string name="item_quantity">Item Quantity</string>
     <string name="item_amount">Item Amount</string>
     <string name="item_cat_name">Category Name</string>
     <string name="item_unit_name">Unit Name</string>
@@ -85,7 +86,10 @@
     <string name="sell_search_button">Search</string>
     <string name="sell_payment_type">Payment By</string>
     <string name="sell_total_order_amount">Total Amount</string>
+    <string name="view_bill_details">View</string>
     <string name="rs">\u20B9</string>
+    <string name="error_msg_report">No Data Available</string>
+    <string name="back_msg">Go back to the sell report page</string>
 
     <!-- Tab Strings -->
     <string name="tab_text_item">Items</string>

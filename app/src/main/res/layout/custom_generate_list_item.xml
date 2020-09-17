@@ -16,7 +16,7 @@
             android:id="@+id/detailsRelative"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.2">
+            android:layout_weight="0.3">
 
             <RelativeLayout
                 android:id="@+id/errorRelative"
@@ -121,10 +121,24 @@
             android:id="@+id/addButtonRelative"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.8">
+            android:layout_weight="0.7">
+
+            <TextView
+                android:id="@+id/txtCount"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:padding="5dp"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/dark_brown"
+                android:background="@drawable/leave_days_circle">
+
+            </TextView>
 
             <TextView
                 android:id="@+id/txtAddButton"
+                android:layout_toEndOf="@+id/txtCount"
                 android:gravity="center"
                 android:layout_width="80dp"
                 android:layout_height="50dp"

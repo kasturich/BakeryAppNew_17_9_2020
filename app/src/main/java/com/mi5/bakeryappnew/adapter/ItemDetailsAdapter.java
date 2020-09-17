@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mi5.bakeryappnew.R;
+import com.mi5.bakeryappnew.model.AddItemsForOrder;
 import com.mi5.bakeryappnew.model.ItemDatabaseDetails;
 import com.mi5.bakeryappnew.model.ItemDetails;
 
@@ -69,6 +70,7 @@ public class ItemDetailsAdapter extends BaseAdapter
         TextView txtItemAmount = convertView.findViewById(R.id.txtItemAmount);
         TextView txtItemUnit = convertView.findViewById(R.id.txtItemUnit);
         TextView txtAddButton = convertView.findViewById(R.id.txtAddButton);
+        TextView txtCount = convertView.findViewById(R.id.txtCount);
 
         RelativeLayout discountDateRelative = convertView.findViewById(R.id.discountDateRelative);
         RelativeLayout itemDiscountDetailsRelative = convertView.findViewById(R.id.itemDiscountDetailsRelative);
@@ -100,6 +102,7 @@ public class ItemDetailsAdapter extends BaseAdapter
             txtItemAmount.setText(itemDatabaseDetails.getAmount());
             txtItemUnit.setText(itemDatabaseDetails.getUnit());
         }
+
         return convertView;
     }
 }

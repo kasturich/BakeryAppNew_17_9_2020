@@ -12,9 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -96,10 +98,11 @@ public class GenerateOrderNewFragment extends Fragment
     SoapObject responseCategory, responseItem;
 
     String itemName, strTotalItemQuantity, keyItem, valueItem, orderItemJSONString;
-    int itemCount=0, totalQuantity=0;
+    int itemCount=0, totalQuantity=0, showItemCount=0;
 
     AddItemsForOrder addItemsForOrder, addItemsForOrderParcable, addOrderBackItem;
     List<AddItemsForOrder> addItemsForOrderList;
+    List<AddItemsForOrder> showItemsCountList;
 
     ArrayList<AddItemsForOrder> addItemsForOrdersParcelableList
             = new ArrayList<AddItemsForOrder>();
@@ -111,7 +114,7 @@ public class GenerateOrderNewFragment extends Fragment
 
     String valueItemSeparator[];
 
-    Map<String, String> map = new TreeMap<String, String>();
+    Map<String, Integer> map = new TreeMap<String, Integer>();
     Set keys;
     Iterator ii;
 
@@ -195,6 +198,7 @@ public class GenerateOrderNewFragment extends Fragment
 
         itemDetailsList = new ArrayList<ItemDetails>();
         addItemsForOrderList = new ArrayList<AddItemsForOrder>();
+        showItemsCountList = new ArrayList<AddItemsForOrder>();
         categoryDetailsList = new ArrayList<CategoryDetails>();
 
         addItemsForBackOrderList = new ArrayList<AddItemsForOrder>();
@@ -217,46 +221,106 @@ public class GenerateOrderNewFragment extends Fragment
         itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                try {
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "Item is selected", Toast.LENGTH_SHORT).show();
+                    System.out.println("add button item id " + itemDetailsList.get(i).getItemId());
 
-                Toast.makeText(getActivity().getApplicationContext(),
-                        "Item is selected", Toast.LENGTH_SHORT).show();
-                System.out.println("add button item id " + itemDetailsList.get(i).getItemId());
-
-                if(addItemsForBackOrderList.size()>0)
-                {
-                    System.out.println("addItemsForBackOrderList is > 0"
-                    +addItemsForBackOrderList.size());
-
-                    //for (int j=0; j<addItemsForBackOrderList.size();j++)
-                    //{
+                    if (addItemsForBackOrderList.size() > 0) {
+                        System.out.println("addItemsForBackOrderList is > 0"
+                                + addItemsForBackOrderList.size());
+                        System.out.println("add button back item itemCount " + itemCount);
+                        //for (int j=0; j<addItemsForBackOrderList.size();j++)
+                        //{
                         addOrderBackItem = new AddItemsForOrder(
-                            itemDetailsList.get(i).getItemId(),
-                            itemDetailsList.get(i).getItemName(),
-                            String.valueOf(itemCount),
-                            itemDetailsList.get(i).getAmount(),
-                            itemDetailsList.get(i).getCategoryId()
+                                itemDetailsList.get(i).getItemId(),
+                                itemDetailsList.get(i).getItemName(),
+                                String.valueOf(itemCount),
+                                itemDetailsList.get(i).getAmount(),
+                                itemDetailsList.get(i).getCategoryId()
                         );
+
                         addItemsForBackOrderList.add(addOrderBackItem);
-                    //}
+                        showItemsCountList.add(addOrderBackItem);
+
+                        System.out.println("addItemsForBackOrderList " + addItemsForBackOrderList.size());
+                        System.out.println("showItemsCountList " + showItemsCountList.size());
+                        System.out.println("addItemsForBackOrderList item quantity "
+                                + addItemsForBackOrderList.get(i).getItemQuantity());
+
+                        int count = 1;
+                        try {
+                            count = map.get(itemDetailsList.get(i).getItemId());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        map.put(itemDetailsList.get(i).getItemId(), (count + 1));
+                        /*Toast.makeText(getActivity().getApplicationContext(),
+                                String.valueOf(count), Toast.LENGTH_LONG).show();*/
+
+                        view = itemListView.getChildAt(i);
+                        LinearLayout mainLinear = view.findViewById(R.id.mainLinear);
+                        TextView txtCount = view.findViewById(R.id.txtCount);
+                        //itemCount = Integer.parseInt(addItemsForOrderList.get(i).getItemQuantity());
+                        txtCount.setText(String.valueOf(count));
+                        mainLinear.setBackgroundColor(getResources().getColor(R.color.light_grey));
+
+                    } else {
+                        System.out.println("addItemsForBackOrderList is < 0"
+                                + addItemsForBackOrderList.size());
+                        System.out.println("add button item itemCount " + itemCount);
+                        showItemCount = 0;
+
+                        addItemsForOrder = new AddItemsForOrder(
+                                itemDetailsList.get(i).getItemId(),
+                                itemDetailsList.get(i).getItemName(),
+                                String.valueOf(itemCount),
+                                itemDetailsList.get(i).getAmount(),
+                                itemDetailsList.get(i).getCategoryId()
+                        );
+
+                        addItemsForOrderList.add(addItemsForOrder);
+                        showItemsCountList.add(addItemsForOrder);
+
+                        System.out.println("showItemsCount List.get(i).getItemId() "
+                                + itemDetailsList.get(i).getItemId());
+                        /*showItemCount = countItemOccurance(showItemsCountList,
+                                showItemsCountList.size(),
+                                Integer.parseInt(showItemsCountList.get(i).getItemId()));*/
+
+                        /*System.out.println("showItemCount "
+                                + showItemsCountList.get(i).getItemId() + " " + showItemCount);
+
+                        view = itemListView.getChildAt(i);
+                        TextView txtCount = view.findViewById(R.id.txtCount);
+                        txtCount.setText(String.valueOf(showItemCount));*/
+
+                        int count = 1;
+                        try {
+                            count = map.get(itemDetailsList.get(i).getItemId());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        map.put(itemDetailsList.get(i).getItemId(), (count + 1));
+                        /*Toast.makeText(getActivity().getApplicationContext(),
+                                String.valueOf(count), Toast.LENGTH_LONG).show();*/
+
+                        view = itemListView.getChildAt(i);
+                        LinearLayout mainLinear = view.findViewById(R.id.mainLinear);
+                        TextView txtCount = view.findViewById(R.id.txtCount);
+                        //itemCount = Integer.parseInt(addItemsForOrderList.get(i).getItemQuantity());
+                        txtCount.setText(String.valueOf(count));
+                        mainLinear.setBackgroundColor(getResources().getColor(R.color.light_grey));
+                    }
+
+                    System.out.println("itemCount " + itemCount);
+                    System.out.println("showItemCount " + i + " " + showItemCount);
+                    System.out.println("addItemsForOrderList size " + addItemsForOrderList.size());
                 }
-                else
+                catch (Exception e)
                 {
-                    System.out.println("addItemsForBackOrderList is < 0"
-                            +addItemsForBackOrderList.size());
-
-                    addItemsForOrder = new AddItemsForOrder(
-                            itemDetailsList.get(i).getItemId(),
-                            itemDetailsList.get(i).getItemName(),
-                            String.valueOf(itemCount),
-                            itemDetailsList.get(i).getAmount(),
-                            itemDetailsList.get(i).getCategoryId()
-                    );
-
-                    addItemsForOrderList.add(addItemsForOrder);
+                    e.getMessage();
                 }
-
-                System.out.println("itemCount " + itemCount);
-                System.out.println("addItemsForOrderList size " + addItemsForOrderList.size());
             }
         });
 
@@ -370,106 +434,20 @@ public class GenerateOrderNewFragment extends Fragment
         return res;
     }
 
-    /*public void insertCategoriesIntoList()
+    public int countItemOccurance(List<AddItemsForOrder> addItemsForOrdersParcelableList,
+                              int listSize, int searchId)
     {
-        try {
-            Cursor res = db.getAllCategoryData();
-            if(res.getCount() == 0) {
-                // show message
-                Toast.makeText(getActivity().getApplicationContext(),
-                        "No Categories Available", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            StringBuffer buffer = new StringBuffer();
-            while (res.moveToNext()) {
-
-                System.out.println("list id id  :"+ res.getString(0)+"\n");
-                System.out.println("list company id  :"+ res.getString(1)+"\n");
-                System.out.println("list scheme id  :"+ res.getString(2)+"\n");
-
-                categoryDatabaseDetails = new CategoryDatabaseDetails(
-                        res.getString(0),
-                        res.getString(1),
-                        res.getString(2),
-                        res.getString(3));
-                categoryDatabaseDetailsList.add(categoryDatabaseDetails);
-
-                simpleSpinnerArrayAdapter = new SimpleSpinnerArrayAdapter
-                        (getActivity().getApplicationContext(), categoryDatabaseDetailsList);
-                simpleSpinnerArrayAdapter.notifyDataSetChanged();
-                categorySpinner.setAdapter(simpleSpinnerArrayAdapter);
-            }
-            System.out.println("schemeDetailsList size on save = " + categoryDatabaseDetailsList.size());
-        }
-        catch (Exception e)
+        int res =0;
+        for(int i=0; i<listSize; i++)
         {
-            e.getMessage();
+            if(searchId == Integer.parseInt(
+                    addItemsForOrdersParcelableList.get(i).getItemId()))
+            {
+                res++;
+            }
         }
+        return res;
     }
-
-    public void insertCategoryItemIntoList(String catPrimaryId)
-    {
-        try {
-            Cursor res = db.getAllCategoryItemData(catPrimaryId);
-            if(res.getCount() == 0) {
-                // show message
-
-                itemDatabaseDetails = new ItemDatabaseDetails(
-                        "0",
-                        "0",
-                        "0",
-                        "0",
-                        "0",
-                        "0",
-                        "0",
-                        "0",
-                        "0"
-                );
-                itemDatabaseDetailsList.add(itemDatabaseDetails);
-
-                itemDatabaseDetailsAdapter = new ItemDatabaseDetailsAdapter
-                        (getActivity().getApplicationContext(), itemDatabaseDetailsList);
-                itemDatabaseDetailsAdapter.notifyDataSetChanged();
-                itemListView.setAdapter(itemDatabaseDetailsAdapter);
-
-                Toast.makeText(getActivity().getApplicationContext(),
-                        "No Items Available", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            StringBuffer buffer = new StringBuffer();
-            while (res.moveToNext()) {
-
-                System.out.println("list id id  :"+ res.getString(0)+"\n");
-                System.out.println("list item id  :"+ res.getString(1)+"\n");
-                System.out.println("list item name  :"+ res.getString(2)+"\n");
-
-                itemDatabaseDetails = new ItemDatabaseDetails(
-                        res.getString(0),
-                        res.getString(1),
-                        res.getString(2),
-                        res.getString(3),
-                        res.getString(4),
-                        res.getString(5),
-                        res.getString(6),
-                        res.getString(7),
-                        res.getString(8)
-                );
-                itemDatabaseDetailsList.add(itemDatabaseDetails);
-
-                itemDatabaseDetailsAdapter = new ItemDatabaseDetailsAdapter
-                        (getActivity().getApplicationContext(), itemDatabaseDetailsList);
-                itemDatabaseDetailsAdapter.notifyDataSetChanged();
-                itemListView.setAdapter(itemDatabaseDetailsAdapter);
-            }
-            System.out.println("Item List size = " + itemDatabaseDetailsList.size());
-        }
-        catch (Exception e)
-        {
-            e.getMessage();
-        }
-    }*/
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)

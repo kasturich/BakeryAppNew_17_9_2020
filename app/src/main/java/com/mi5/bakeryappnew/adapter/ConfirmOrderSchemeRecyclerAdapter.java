@@ -34,6 +34,7 @@ public class ConfirmOrderSchemeRecyclerAdapter
     private int selectedPos = 0;
     private boolean clickable = true;
     SchemeDetails orderItem;
+    String schemeIds="0";
     SchemeIdInterface schemeIdInterface;
     String str;
 
@@ -82,9 +83,16 @@ public class ConfirmOrderSchemeRecyclerAdapter
 
                     System.out.println("scheme id " + schemeList.get(position).getSchemeId());
 
-                    System.out.println("selected scheme details " + schemeList.get(position).getSchemeId()
+                    //schemeIds =  schemeList.get(position).getSchemeId()+ "/"+schemeIds;
+
+                    schemeIds =  schemeIds  + "/" + schemeList.get(position).getSchemeId()
                             + "_" + schemeList.get(position).getDiscount()
-                            + "_" + schemeList.get(position).getCategoryId());
+                            + "_" + schemeList.get(position).getCategoryId();
+
+                    System.out.println("schemeIds " + schemeIds);
+
+                    System.out.println("selected scheme details "
+                            + schemeIds);
 
                     /*str = orderItem.getSchemeId()
                             + "_" + orderItem.getDiscount()
@@ -93,6 +101,8 @@ public class ConfirmOrderSchemeRecyclerAdapter
                     onItemClickListner.onClick(schemeList.get(position).getSchemeId()
                             + "_" + schemeList.get(position).getDiscount()
                             + "_" + schemeList.get(position).getCategoryId());
+
+                    //onItemClickListner.onClick(schemeIds);
 
                     //onItemClickListner.onClick(str);
 

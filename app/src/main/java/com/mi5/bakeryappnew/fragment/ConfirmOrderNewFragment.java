@@ -89,16 +89,22 @@ implements ConfirmOrderSchemeRecyclerAdapter.onItemClickListner{
     private OnFragmentInteractionListener mListener;
 
     Bundle bundle = new Bundle();
-    AddItemsForOrder addItemsForOrder, addItemsForBackOrder, tempFinalItemOrder, finalItemOrder;
+    AddItemsForOrder addItemsForOrder, addItemsForBackOrder, tempFinalItemOrder, finalItemOrder,
+    finalItemOrderWithDiscount, schemeDiscount, schemeNonDiscount;
     List<AddItemsForOrder> addItemsForOrderList;
     ArrayList<AddItemsForOrder> addItemsForBackOrderList;
     ArrayList<AddItemsForOrder> addItemsForOrdersParcelableList;
     List<AddItemsForOrder> tempItemList;
     List<AddItemsForOrder> finalItemList;
+    List<AddItemsForOrder> finalItemOrderWithDiscountList;
+    List<AddItemsForOrder> schemeDiscountList;
+    List<AddItemsForOrder> schemeNonDiscountList;
     List<AddItemsForOrder> tempFinalItemOrderList;
     ItemDatabaseDetails itemDatabaseDetails;
     List<ItemDatabaseDetails> itemDatabaseDetailsList;
     List<String> catIdList;
+
+    boolean isDiscount = false;
 
     JSONArray req = new JSONArray();
     JSONObject reqObj = null;
@@ -128,11 +134,14 @@ implements ConfirmOrderSchemeRecyclerAdapter.onItemClickListner{
 
     int totalItems =0 ;
     double strTotalAmount =0.0, discountOnItemPrice=0.0, totalAmount=0.0,
-            discountedAmount, nonDiscountedAmount, discountAddition=0.0, nonDiscountAddition=0.0;
+            discountedAmount, nonDiscountedAmount, discountAddition=0.0, nonDiscountAddition=0.0,
+    noSchemeCatIdAmount=0.0;
 
     String schemeAmount="0.0", schemeCategoryId, strPaymentMode;
-    String[] schemeId;
-    String selectedSchemeId="0", selectedSchemeDiscountAmount, finalDiscountedAmount;
+    String[] mainSchemeId, schemeId;
+    String selectedSchemeId="0", finalSelectedSchemeId, finalDiscountedAmount;
+
+    String strSelectedSchemeId;
 
     ConfirmOrderRecyclerAdapter confirmOrderRecyclerAdapter;
 
@@ -185,35 +194,35 @@ implements ConfirmOrderSchemeRecyclerAdapter.onItemClickListner{
         }
     }
 
-    View view;
+    View mainView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_confirm_order, container, false);
+        mainView = inflater.inflate(R.layout.fragment_confirm_order, container, false);
 
         ((NavigationDrawerActivity) getActivity()).getSupportActionBar()
                 .setTitle(getResources().getString(R.string.nav_header_confirm_order));
 
-        txtDate = view.findViewById(R.id.txtDate);
-        txtTime = view.findViewById(R.id.txtTime);
-        edtGuestName = view.findViewById(R.id.edtGuestName);
-        edtGuestContactNo = view.findViewById(R.id.edtGuestContactNo);
-        edtGuestAddress = view.findViewById(R.id.edtGuestAddress);
-        orderedItemRecyclerList = view.findViewById(R.id.orderedItemRecyclerList);
-        finalItemRecyclerListView = view.findViewById(R.id.finalItemRecyclerListView);
-        btnConfirm = view.findViewById(R.id.btnConfirm);
-        btnTempBill = view.findViewById(R.id.btnTempBill);
-        txtTotalQuantity = view.findViewById(R.id.txtTotalQuantity);
-        txtTotalAmount = view.findViewById(R.id.txtTotalAmount);
-        schemeListView = view.findViewById(R.id.schemeListView);
-        paymentModeRadioGroup = view.findViewById(R.id.paymentModeRadioGroup);
-        paymentModeCash = view.findViewById(R.id.paymentModeCash);
-        paymentModeCard = view.findViewById(R.id.paymentModeCard);
-        paymentModeOnline = view.findViewById(R.id.paymentModeOnline);
-        schemeProgressBar = view.findViewById(R.id.schemeProgressBar);
-        txtContinueOrderingTitle = view.findViewById(R.id.txtContinueOrderingTitle);
-        txtGetSchemesTitle = view.findViewById(R.id.txtGetSchemesTitle);
+        txtDate = mainView.findViewById(R.id.txtDate);
+        txtTime = mainView.findViewById(R.id.txtTime);
+        edtGuestName = mainView.findViewById(R.id.edtGuestName);
+        edtGuestContactNo = mainView.findViewById(R.id.edtGuestContactNo);
+        edtGuestAddress = mainView.findViewById(R.id.edtGuestAddress);
+        orderedItemRecyclerList = mainView.findViewById(R.id.orderedItemRecyclerList);
+        finalItemRecyclerListView = mainView.findViewById(R.id.finalItemRecyclerListView);
+        btnConfirm = mainView.findViewById(R.id.btnConfirm);
+        btnTempBill = mainView.findViewById(R.id.btnTempBill);
+        txtTotalQuantity = mainView.findViewById(R.id.txtTotalQuantity);
+        txtTotalAmount = mainView.findViewById(R.id.txtTotalAmount);
+        schemeListView = mainView.findViewById(R.id.schemeListView);
+        paymentModeRadioGroup = mainView.findViewById(R.id.paymentModeRadioGroup);
+        paymentModeCash = mainView.findViewById(R.id.paymentModeCash);
+        paymentModeCard = mainView.findViewById(R.id.paymentModeCard);
+        paymentModeOnline = mainView.findViewById(R.id.paymentModeOnline);
+        schemeProgressBar = mainView.findViewById(R.id.schemeProgressBar);
+        txtContinueOrderingTitle = mainView.findViewById(R.id.txtContinueOrderingTitle);
+        txtGetSchemesTitle = mainView.findViewById(R.id.txtGetSchemesTitle);
 
         bundle = this.getArguments();
         if (bundle != null) {
@@ -225,6 +234,9 @@ implements ConfirmOrderSchemeRecyclerAdapter.onItemClickListner{
 
         addItemsForOrderList = new ArrayList<AddItemsForOrder>();
         addItemsForBackOrderList = new ArrayList<AddItemsForOrder>();
+        finalItemOrderWithDiscountList = new ArrayList<AddItemsForOrder>();
+        schemeDiscountList = new ArrayList<AddItemsForOrder>();
+        schemeNonDiscountList = new ArrayList<AddItemsForOrder>();
         finalOrderItemList = new ArrayList<FinalOrderItem>();
         //addItemsForOrderList.add(addItemsForOrder);
         addItemsForOrderList.add(addItemsForOrder);
@@ -279,6 +291,7 @@ implements ConfirmOrderSchemeRecyclerAdapter.onItemClickListner{
 
         try {
             tempItemList = removeDuplicates(addItemsForOrdersParcelableList);
+            schemeDiscountList = removeDuplicates(addItemsForOrdersParcelableList);
 
             Date c = Calendar.getInstance().getTime();
             System.out.println("Current time => " + c);
@@ -308,7 +321,6 @@ implements ConfirmOrderSchemeRecyclerAdapter.onItemClickListner{
             txtGetSchemesTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
 
                     txtContinueOrderingTitle.setEnabled(false);
                     txtContinueOrderingTitle.setBackgroundColor(
@@ -504,6 +516,205 @@ implements ConfirmOrderSchemeRecyclerAdapter.onItemClickListner{
 
             btnTempBill.setOnClickListener(new View.OnClickListener() {
                 @Override
+                public void onClick(View v) {
+
+                    txtGetSchemesTitle.setEnabled(false);
+
+                    txtGetSchemesTitle.setBackgroundColor(
+                            getResources().getColor(R.color.horizontal_line));
+                    txtGetSchemesTitle.setTextColor(
+                            getResources().getColor(R.color.dark_brown));
+
+                    txtContinueOrderingTitle.setEnabled(false);
+                    txtContinueOrderingTitle.setBackgroundColor(
+                            getResources().getColor(R.color.horizontal_line));
+                    txtContinueOrderingTitle.setTextColor(
+                            getResources().getColor(R.color.dark_brown));
+
+                    totalItems = 0;
+                    strTotalAmount = 0;
+                    orderId = orderId + 1;
+
+                    showSchemeList.clear();
+                    //schemeListView.removeAllViewsInLayout();
+                    schemeListView.setVisibility(View.GONE);
+
+                    edtGuestName.setVisibility(View.VISIBLE);
+                    edtGuestContactNo.setVisibility(View.VISIBLE);
+                    edtGuestAddress.setVisibility(View.VISIBLE);
+                    paymentModeRadioGroup.setVisibility(View.VISIBLE);
+                    btnConfirm.setVisibility(View.VISIBLE);
+                    btnTempBill.setEnabled(false);
+                    btnTempBill.setBackgroundColor(getResources()
+                            .getColor(R.color.horizontal_line));
+                    btnTempBill.setTextColor(getResources().getColor(R.color.dark_brown));
+
+                    if(finalOrderItemList.size() > 0)
+                    {
+                        for (int i = 0; i < tempItemList.size(); i++) {
+                            mainView = finalItemRecyclerListView.getChildAt(i);
+                            TextView itemQuantity = mainView.findViewById(R.id.edtEditQuantity);
+                            TextView itemPrice = mainView.findViewById(R.id.txtItemPrice);
+                            TextView itemName = mainView.findViewById(R.id.txtItemName);
+                            TextView itemCategoryId = mainView.findViewById(R.id.txtItemCategoryId);
+
+                            strItemQuantity = itemQuantity.getText().toString();
+                            strItemPrice = itemPrice.getText().toString();
+                            strItemName = itemName.getText().toString();
+                            strItemCategoryId = itemCategoryId.getText().toString();
+
+                            System.out.println("on button click quantity " + strItemQuantity);
+                            System.out.println("on button click price " + strItemPrice);
+                            System.out.println("on button click name " + strItemName);
+                            System.out.println("on button click cat id " + strItemCategoryId);
+
+                            totalItems = totalItems +
+                                    Integer.parseInt(itemQuantity.getText().toString());
+
+                            strTotalAmount = strTotalAmount +
+                                    Double.parseDouble(itemPrice.getText().toString());
+
+                            finalItemOrder = new AddItemsForOrder(
+                                    tempItemList.get(i).getItemId(),
+                                    strItemName,
+                                    strItemQuantity,
+                                    strItemPrice,
+                                    tempItemList.get(i).getCatId()
+                            );
+                            finalItemList.add(finalItemOrder);
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < tempItemList.size(); i++) {
+                            mainView = orderedItemRecyclerList.getChildAt(i);
+                            TextView itemQuantity = mainView.findViewById(R.id.edtEditQuantity);
+                            TextView itemPrice = mainView.findViewById(R.id.txtItemPrice);
+                            TextView itemName = mainView.findViewById(R.id.txtItemName);
+                            TextView itemCategoryId = mainView.findViewById(R.id.txtItemCategoryId);
+
+                            strItemQuantity = itemQuantity.getText().toString();
+                            strItemPrice = itemPrice.getText().toString();
+                            strItemName = itemName.getText().toString();
+                            strItemCategoryId = itemCategoryId.getText().toString();
+
+                            System.out.println("on button click quantity " + strItemQuantity);
+                            System.out.println("on button click price " + strItemPrice);
+                            System.out.println("on button click name " + strItemName);
+                            System.out.println("on button click cat id " + strItemCategoryId);
+
+                            totalItems = totalItems +
+                                    Integer.parseInt(itemQuantity.getText().toString());
+
+                            strTotalAmount = strTotalAmount +
+                                    Double.parseDouble(itemPrice.getText().toString());
+
+                            finalItemOrder = new AddItemsForOrder(
+                                    tempItemList.get(i).getItemId(),
+                                    strItemName,
+                                    strItemQuantity,
+                                    strItemPrice,
+                                    tempItemList.get(i).getCatId()
+                            );
+                            finalItemList.add(finalItemOrder);
+                        }
+                    }
+
+                    System.out.println("finalItemList size on temp btn " + finalItemList.size());
+
+                    //calculate for scheme applied on item
+                    if(isDiscount) {
+                        if (schemeDiscountList.size() > 0) {
+                            System.out.println("list with discount " + schemeDiscountList.size());
+
+                            for (int i = 0; i < schemeDiscountList.size(); i++) {
+                                discountAddition = discountAddition +
+                                        Double.parseDouble(schemeDiscountList.get(i).getItemPrice());
+
+                                totalAmount = totalAmount + Double.parseDouble(finalItemList.get(i).getItemPrice());
+
+                                System.out.println("totalAmount " + totalAmount);
+
+                                finalItemOrderWithDiscount = new AddItemsForOrder(
+                                        schemeDiscountList.get(i).getItemId(),
+                                        schemeDiscountList.get(i).getItemName(),
+                                        schemeDiscountList.get(i).getItemQuantity(),
+                                        schemeDiscountList.get(i).getItemPrice(),
+                                        schemeDiscountList.get(i).getCatId()
+                                );
+                                finalItemOrderWithDiscountList.add(finalItemOrderWithDiscount);
+                            }
+                        }
+                    }
+                    else //calculate for no scheme applied on item
+                    {
+                        //schemeDiscountList.clear();
+                        for(int i=0; i<finalItemList.size(); i++)
+                        {
+                            System.out.println("strSelectedSchemeId " + strSelectedSchemeId);
+                            System.out.println("schemeAmount for loop " + schemeAmount);
+                            System.out.println("schemeCategoryId for loop " + schemeCategoryId);
+
+                            System.out.println("finalItemList id for loop "
+                                    + finalItemList.get(i).getCatId());
+
+                            nonDiscountedAmount = nonDiscountedAmount
+                                    + Double.parseDouble(finalItemList.get(i).getItemPrice());
+
+                            totalAmount = totalAmount + Double.parseDouble(finalItemList.get(i).getItemPrice());
+
+                            System.out.println("totalAmount " + totalAmount);
+                            //nonDiscountAddition = nonDiscountAddition + nonDiscountedAmount;
+                            System.out.println("nonDiscountedAmount " + nonDiscountedAmount);
+                            System.out.println("nonDiscountAddition " + nonDiscountAddition);
+
+                            finalItemOrderWithDiscount = new AddItemsForOrder(
+                                    finalItemList.get(i).getItemId(),
+                                    finalItemList.get(i).getItemName(),
+                                    finalItemList.get(i).getItemQuantity(),
+                                    finalItemList.get(i).getItemPrice(),
+                                    finalItemList.get(i).getCatId()
+                            );
+                            finalItemOrderWithDiscountList.add(finalItemOrderWithDiscount);
+                        }
+                    }
+
+                    strTotalAmount = discountAddition + nonDiscountedAmount;
+
+                    System.out.println("strTotalAmount for loop " + strTotalAmount);
+
+                    txtTotalQuantity.setText(String.valueOf(totalItems));
+                    txtTotalAmount.setText(String.valueOf(strTotalAmount));
+
+                    btnConfirm.setEnabled(true);
+
+                }
+            });
+
+            if (paymentModeRadioGroup!= null)
+            {
+                paymentModeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+                {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        // checkedId is the RadioButton selected
+                        switch(checkedId) {
+                            case(R.id.paymentModeCard):
+                                strPaymentMode = paymentModeCard.getText().toString();
+                                break;
+                            case(R.id.paymentModeCash):
+                                strPaymentMode = paymentModeCash.getText().toString();
+                                break;
+                            case(R.id.paymentModeOnline):
+                                strPaymentMode = paymentModeOnline.getText().toString();
+                                break;
+                        }
+                    }
+                });
+            }
+
+            /*btnTempBill.setOnClickListener(new View.OnClickListener() {
+                @Override
                 public void onClick(View view) {
 
                     System.out.println("big else go to web service");
@@ -611,33 +822,88 @@ implements ConfirmOrderSchemeRecyclerAdapter.onItemClickListner{
                     }
 
                     System.out.println("finalItemList size " + finalItemList.size());
+                    System.out.println("strSelectedSchemeId " + strSelectedSchemeId);
+                    //System.out.println("strSelectedSchemeId size " + strSelectedSchemeId.length());
+
+                    boolean sameCategory = false;
+                    //calculation on final item list
                     for(int i=0; i<finalItemList.size(); i++)
                     {
-                        System.out.println("schemeAmount for loop " + schemeAmount);
-                        System.out.println("schemeCategoryId for loop " + schemeCategoryId);
-                        System.out.println("finalItemList id for loop "
-                                + finalItemList.get(i).getCatId());
-
+                        System.out.println("finalItemList id " + finalItemList.get(i).getCatId());
                         totalAmount = totalAmount + Double.parseDouble(finalItemList.get(i).getItemPrice());
-
-                        if(finalItemList.get(i).getCatId().equals(schemeCategoryId))
+                        //check scheme is applied or not
+                        if(strSelectedSchemeId != null)
                         {
-                            discountOnItemPrice =
-                                    (Double.parseDouble(finalItemList.get(i).getItemPrice())
-                                            *
-                                            (Double.parseDouble(schemeAmount) / 100));
+                            mainSchemeId = strSelectedSchemeId.replace("0/", "").split("/");
+                            System.out.println("mainSchemeId length " + mainSchemeId.length);
 
-                            System.out.println("discountOnItemPrice " + discountOnItemPrice);
+                            //scheme for loop
+                            for(int j=0; j<mainSchemeId.length; j++)
+                            {
+                                System.out.println("i " + i + " j " + j);
+                                System.out.println("mainSchemeId data " + mainSchemeId[j]);
+                                schemeId = mainSchemeId[j].split("_");
+                                schemeAmount = schemeId[1];
+                                schemeCategoryId = schemeId[2];
 
-                            discountedAmount = Double.parseDouble(finalItemList.get(i).getItemPrice()) -
-                                    discountOnItemPrice;
+                                System.out.println("item category " + finalItemList.get(i).getCatId());
+                                System.out.println("scheme category " + schemeCategoryId);
 
-                            discountAddition = discountAddition + discountedAmount;
+                                //item category id and scheme category id are same
+                                if(finalItemList.get(i).getCatId().equals(schemeCategoryId))
+                                {
+                                    sameCategory = true;
 
-                            System.out.println("discountedAmount " + discountedAmount);
-                            System.out.println("discountAddition " + discountAddition);
+                                    discountOnItemPrice =
+                                            (Double.parseDouble(finalItemList.get(i).getItemPrice())
+                                                    *
+                                                    (Double.parseDouble(schemeAmount) / 100));
+
+                                    System.out.println("discountOnItemPrice " + discountOnItemPrice);
+
+                                    discountedAmount = Double.parseDouble(finalItemList.get(i).getItemPrice()) -
+                                            discountOnItemPrice;
+
+                                    discountAddition = discountAddition + discountedAmount;
+
+                                    System.out.println("discountedAmount " + discountedAmount);
+                                    System.out.println("discountAddition " + discountAddition);
+
+                                    finalItemOrderWithDiscount = new AddItemsForOrder(
+                                            finalItemList.get(i).getItemId(),
+                                            finalItemList.get(i).getItemName(),
+                                            finalItemList.get(i).getItemQuantity(),
+                                            String.valueOf(discountedAmount),
+                                            finalItemList.get(i).getCatId()
+                                    );
+                                    finalItemOrderWithDiscountList.add(finalItemOrderWithDiscount);
+                                }
+                                //item category id and scheme category id are not same
+                                *//*else if (! finalItemList.get(i).getCatId().equals(schemeCategoryId))
+                                {
+                                    noSchemeCatIdAmount = 0.0;
+                                }*//*
+                                else //for non discount
+                                {
+                                    nonDiscountedAmount = nonDiscountedAmount
+                                            + Double.parseDouble(finalItemList.get(i).getItemPrice());
+
+                                    //nonDiscountAddition = nonDiscountAddition + nonDiscountedAmount;
+                                    System.out.println("nonDiscountedAmount " + nonDiscountedAmount);
+                                    System.out.println("nonDiscountAddition " + nonDiscountAddition);
+
+                                    finalItemOrderWithDiscount = new AddItemsForOrder(
+                                            finalItemList.get(i).getItemId(),
+                                            finalItemList.get(i).getItemName(),
+                                            finalItemList.get(i).getItemQuantity(),
+                                            finalItemList.get(i).getItemPrice(),
+                                            finalItemList.get(i).getCatId()
+                                    );
+                                    finalItemOrderWithDiscountList.add(finalItemOrderWithDiscount);
+                                }
+                            }
                         }
-                        else
+                        else // scheme is not applied ie. no discount
                         {
                             nonDiscountedAmount = nonDiscountedAmount
                                     + Double.parseDouble(finalItemList.get(i).getItemPrice());
@@ -645,6 +911,16 @@ implements ConfirmOrderSchemeRecyclerAdapter.onItemClickListner{
                             //nonDiscountAddition = nonDiscountAddition + nonDiscountedAmount;
                             System.out.println("nonDiscountedAmount " + nonDiscountedAmount);
                             System.out.println("nonDiscountAddition " + nonDiscountAddition);
+
+                            finalItemOrderWithDiscount = new AddItemsForOrder(
+                                    finalItemList.get(i).getItemId(),
+                                    finalItemList.get(i).getItemName(),
+                                    finalItemList.get(i).getItemQuantity(),
+                                    finalItemList.get(i).getItemPrice(),
+                                    finalItemList.get(i).getCatId()
+                            );
+                            finalItemOrderWithDiscountList.add(finalItemOrderWithDiscount);
+
                         }
                     }
 
@@ -657,24 +933,7 @@ implements ConfirmOrderSchemeRecyclerAdapter.onItemClickListner{
 
                     btnConfirm.setEnabled(true);
                 }
-            });
-
-            if (paymentModeRadioGroup!= null)
-            {
-                paymentModeRadioGroup.setOnCheckedChangeListener
-                    (new RadioGroup.OnCheckedChangeListener()
-                    {
-                        @Override
-                        public void onCheckedChanged(RadioGroup radioGroup,int i)
-                        {
-                            int selectedId = radioGroup.getCheckedRadioButtonId();
-
-                            radioButton = (RadioButton) view.findViewById(selectedId);
-
-                            strPaymentMode = radioButton.getText().toString();
-                        }
-                    });
-            }
+            });*/
 
             btnConfirm.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -760,7 +1019,7 @@ implements ConfirmOrderSchemeRecyclerAdapter.onItemClickListner{
         {
             e.getMessage();
         }
-        return view;
+        return mainView;
     }
 
     @Override
@@ -795,131 +1054,6 @@ implements ConfirmOrderSchemeRecyclerAdapter.onItemClickListner{
         System.out.println("connection " +isConnected);
         return activeNetwork != null && activeNetwork.isConnected();
     }
-
-    /*public void getSchemes(List<String> catIdList, String selectedDate)
-    {
-        try {
-
-            for(int j=0; j <schemeDetailsList.size(); j++) {
-
-                strCatId = schemeDetailsList.get(j).getCategoryId();
-
-                for(int i=0 ; i<catIdList.size();i++)
-                {
-                    if(catIdList.get(i).equals(strCatId))
-                    {
-                        tempSchemeIdList.add(schemeDetailsList.get(j).getSchemeId());
-                    }
-                }
-            }
-            System.out.println("temp Scheme Id list size " + tempSchemeIdList.size());
-
-            schemeIdList = removeDuplicateSchemeId(tempSchemeIdList);
-            System.out.println("Scheme Id list " + schemeIdList.size());
-
-            for(int i=0; i<schemeIdList.size();i++)
-            {
-                System.out.println("schemeIdList id " + schemeIdList.get(i));
-
-                for(int j=0; j<schemeIdList.size(); j++)
-                {
-                    if(schemeIdList.get(i).equals(schemeDetailsList.get(j).getSchemeId()))
-                    {
-                        String strEndDate = schemeDetailsList.get(j).getToDate();
-
-                        System.out.println("strEndDate " + strEndDate);
-                        try {
-                            SimpleDateFormat dateFormat1 = new SimpleDateFormat(
-                                    "dd/MM/yyyy", Locale.US);
-                            String currentDate = dateFormat1.format(new Date());
-                            Date endDate = dateFormat1.parse(strEndDate);
-
-                            //String currentDate = selectedDate;
-                            System.out.println(dateFormat1.format(endDate));
-                            if (dateFormat1.parse(currentDate).after
-                                    (dateFormat1.parse(strEndDate))) {
-
-                                System.out.println("currentDate in if " + currentDate);
-                                System.out.println("strEndDate in if " + strEndDate);
-                            }
-                            else
-                            {
-                                schemeDetails = new SchemeDetails(
-                                    schemeDetailsList.get(j).getCompanyId(),
-                                    schemeDetailsList.get(j).getSchemeId(),
-                                    schemeDetailsList.get(j).getCategoryId(),
-                                    schemeDetailsList.get(j).getCategory(),
-                                    schemeDetailsList.get(j).getOutletId(),
-                                    schemeDetailsList.get(j).getOutletName(),
-                                    schemeDetailsList.get(j).getDiscount(),
-                                    schemeDetailsList.get(j).getFromDate(),
-                                    schemeDetailsList.get(j).getToDate(),
-                                    "1"
-                                );
-                                showSchemeList.add(schemeDetails);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            e.getMessage();
-                        }
-                    }
-                }
-            }
-
-            System.out.println("showSchemeList size " + showSchemeList.size());
-
-            Collections.sort(showSchemeList, new Comparator<SchemeDetails>() {
-
-                @Override
-                public int compare(SchemeDetails o1, SchemeDetails o2) {
-                    try {
-                        System.out.println("from time " + new SimpleDateFormat("dd/MM/yyyy", Locale.US).parse(o1.getFromDate()));
-                        System.out.println("to time " + new SimpleDateFormat("dd/MM/yyyy", Locale.US).parse(o1.getToDate()));
-
-                        return new SimpleDateFormat("dd/MM/yyyy", Locale.US).parse(o2.getToDate())
-                                .compareTo(new SimpleDateFormat("dd/MM/yyyy", Locale.US).parse(o1.getToDate()));
-                    } catch (ParseException e) {
-                        return 0;
-                    }
-                }
-            });
-
-            confirmOrderSchemeDetailsAdapter = new ConfirmOrderSchemeRecyclerAdapter(
-                    getActivity().getApplicationContext(), showSchemeList);
-            confirmOrderSchemeDetailsAdapter.notifyDataSetChanged();
-            schemeListView.setAdapter(confirmOrderSchemeDetailsAdapter);
-
-            confirmOrderSchemeDetailsAdapter.setOnItemClickListner
-                    (new ConfirmOrderSchemeRecyclerAdapter.onItemClickListner() {
-                        @Override
-                        public void onClick(String str) {
-                            System.out.println("str = " + str);
-                            schemeId = str.split("_");
-                            if(schemeId[0].equals(""))
-                            {
-                                selectedSchemeId = "0";
-                            }
-                            else {
-                                //selectedSchemeId = selectedSchemeId +","+ schemeId[0];
-                                selectedSchemeId = schemeId[0];
-                            }
-                            schemeAmount = schemeId[1];
-                            schemeCategoryId = schemeId[2];
-
-                            System.out.println("scheme amount " + schemeAmount);
-                            System.out.println("scheme category Id " + schemeCategoryId);
-
-                            // confirmOrderSchemeDetailsAdapter.setClickable(false);
-                        }
-                    });
-
-        }
-        catch (Exception e)
-        {
-            e.getMessage();
-        }
-    }*/
 
     public void getSchemes(List<String> catIdList, String selectedDate)
     {
@@ -1036,8 +1170,10 @@ implements ConfirmOrderSchemeRecyclerAdapter.onItemClickListner{
                     (new ConfirmOrderSchemeRecyclerAdapter.onItemClickListner() {
                         @Override
                         public void onClick(String str) {
-                            System.out.println("str = " + str);
-                            schemeId = str.split("_");
+                            System.out.println("scheme str = " + str);
+                            //schemeId = str.split("_");
+                            strSelectedSchemeId = str;
+                            /*schemeId = str.split("/");
                             if(schemeId[0].equals(""))
                             {
                                 selectedSchemeId = "0";
@@ -1050,9 +1186,106 @@ implements ConfirmOrderSchemeRecyclerAdapter.onItemClickListner{
                             schemeCategoryId = schemeId[2];
 
                             System.out.println("scheme amount " + schemeAmount);
-                            System.out.println("scheme category Id " + schemeCategoryId);
-
+                            System.out.println("scheme category Id " + schemeCategoryId);*/
                             // confirmOrderSchemeDetailsAdapter.setClickable(false);
+
+                            mainSchemeId = strSelectedSchemeId.split("_");
+                            System.out.println("mainSchemeId length " + mainSchemeId.length);
+                            boolean found;
+
+                            //schemeId = mainSchemeId[0].split("_");
+                            schemeAmount = mainSchemeId[1];
+                            schemeCategoryId = mainSchemeId[2];
+                            selectedSchemeId = selectedSchemeId +","+ mainSchemeId[0];
+                            //System.out.println("item category " + finalItemList.get(i).getCatId());
+                            System.out.println("scheme category " + schemeCategoryId);
+                            System.out.println("schemeDiscountList size " + schemeDiscountList.size());
+
+                            for (int i = 0; i < schemeDiscountList.size(); i++) {
+                                mainView = orderedItemRecyclerList.getChildAt(i);
+                                TextView itemQuantity = mainView.findViewById(R.id.edtEditQuantity);
+                                TextView itemPrice = mainView.findViewById(R.id.txtItemPrice);
+                                TextView itemName = mainView.findViewById(R.id.txtItemName);
+                                TextView itemCategoryId = mainView.findViewById(R.id.txtItemCategoryId);
+
+                                strItemQuantity = itemQuantity.getText().toString();
+                                strItemPrice = itemPrice.getText().toString();
+                                strItemName = itemName.getText().toString();
+                                strItemCategoryId = itemCategoryId.getText().toString();
+
+                                System.out.println("on button click quantity " + strItemQuantity);
+                                System.out.println("on button click price " + strItemPrice);
+                                System.out.println("on button click name " + strItemName);
+                                System.out.println("on button click cat id " + strItemCategoryId);
+
+                                totalItems = totalItems +
+                                        Integer.parseInt(itemQuantity.getText().toString());
+
+                                strTotalAmount = strTotalAmount +
+                                        Double.parseDouble(itemPrice.getText().toString());
+
+                                //item category id and scheme category id are same
+                                if(strItemCategoryId.equals(schemeCategoryId))
+                                {
+                                    System.out.println("calculate discount for "
+                                            + strItemName);
+
+                                    discountOnItemPrice =
+                                            (Double.parseDouble(strItemPrice)
+                                                    *
+                                                    (Double.parseDouble(schemeAmount) / 100));
+
+                                    System.out.println("discountOnItemPrice " + discountOnItemPrice);
+
+                                    discountedAmount = Double.parseDouble(strItemPrice) -
+                                            discountOnItemPrice;
+                                    System.out.println("discountedAmount " + discountedAmount);
+
+                                    for(AddItemsForOrder s : schemeDiscountList)
+                                    {
+                                        if(s.getCatId().equals(schemeCategoryId))
+                                        {
+                                            schemeDiscountList.get(i).setItemPrice(String.valueOf(discountedAmount));
+                                            //s.setItemPrice(String.valueOf(discountedAmount));
+                                        }
+                                    }
+                                    //schemeDiscount.setItemPrice(String.valueOf(discountedAmount));
+
+                                    /*schemeDiscount = new AddItemsForOrder(
+                                            tempItemList.get(i).getItemId(),
+                                            strItemName,
+                                            strItemQuantity,
+                                            String.valueOf(discountedAmount),
+                                            tempItemList.get(i).getCatId()
+                                    );*/
+                                    //schemeDiscountList.add(schemeDiscount);
+                                }
+                                /*else
+                                {
+                                    System.out.println("calculate no discount for "
+                                            + strItemName);
+
+                                    nonDiscountedAmount = nonDiscountedAmount
+                                            + Double.parseDouble(strItemPrice);
+
+                                    //nonDiscountAddition = nonDiscountAddition + nonDiscountedAmount;
+                                    System.out.println("nonDiscountedAmount " + nonDiscountedAmount);
+                                    System.out.println("nonDiscountAddition " + nonDiscountAddition);
+
+                                    schemeNonDiscount = new AddItemsForOrder(
+                                            tempItemList.get(i).getItemId(),
+                                            strItemName,
+                                            strItemQuantity,
+                                            String.valueOf(strItemPrice),
+                                            tempItemList.get(i).getCatId()
+                                    );
+
+                                    schemeNonDiscountList.add(schemeNonDiscount);
+                                }*/
+                                //finalItemOrderWithDiscountList.add(finalItemOrderWithDiscount);
+
+                            }
+                            isDiscount = true;
                         }
                     });
 
@@ -1120,17 +1353,19 @@ implements ConfirmOrderSchemeRecyclerAdapter.onItemClickListner{
     public void generateJSON()
     {
         try {
-            for (int i=0; i<finalItemList.size(); i++)
+
+            System.out.println("finalItemOrderWithDiscountList " + finalItemOrderWithDiscountList.size());
+            for (int i=0; i<finalItemOrderWithDiscountList.size(); i++)
             {
                 try {
                     reqObj = new JSONObject();
                     /*itemPrice = Integer.parseInt(finalItemList.get(i).getItemQuantity())
                             * Double.parseDouble(finalItemList.get(i).getItemPrice());*/
 
-                    reqObj.put("itemId", finalItemList.get(i).getItemId());
-                    reqObj.put("itemName", finalItemList.get(i).getItemName());
-                    reqObj.put("itemQuantity", finalItemList.get(i).getItemQuantity());
-                    reqObj.put("itemPrice", finalItemList.get(i).getItemPrice());
+                    reqObj.put("itemId", finalItemOrderWithDiscountList.get(i).getItemId());
+                    reqObj.put("itemName", finalItemOrderWithDiscountList.get(i).getItemName());
+                    reqObj.put("itemQuantity", finalItemOrderWithDiscountList.get(i).getItemQuantity());
+                    reqObj.put("itemPrice", finalItemOrderWithDiscountList.get(i).getItemPrice());
                     req.put(reqObj);
                 } catch (Exception e) {
                     e.getMessage();
@@ -1161,66 +1396,6 @@ implements ConfirmOrderSchemeRecyclerAdapter.onItemClickListner{
         final ArrayList newList = new ArrayList(set);
         return newList;
     }
-
-   /* public void insertOrderIntoDB()
-    {
-        System.out.println("in db " + outletId);
-        System.out.println("in db " + companyId);
-        System.out.println("in db " + orderId);
-        System.out.println("in db " + txtDate.getText().toString());
-        System.out.println("in db " + txtTime.getText().toString());
-        System.out.println("in db " + edtGuestName.getText().toString());
-        System.out.println("in db " + edtGuestContactNo.getText().toString());
-        System.out.println("in db " + edtGuestAddress.getText().toString());
-        System.out.println("in db " + outpassJSONString);
-        System.out.println("in db " + txtTotalQuantity.getText().toString());
-        System.out.println("in db " + strTotalAmount);
-        System.out.println("in db " + selectedSchemeId);
-        System.out.println("in db " + schemeAmount);
-        System.out.println("in db " + discountAddition);
-        System.out.println("in db " + strPaymentMode);
-        try {
-            boolean isInserted = db.insertFinalOrderData(
-                    outletId,
-                    companyId,
-                    String.valueOf(orderId),
-                    txtDate.getText().toString(),
-                    txtTime.getText().toString(),
-                    edtGuestName.getText().toString(),
-                    edtGuestContactNo.getText().toString(),
-                    edtGuestAddress.getText().toString(),
-                    outpassJSONString,
-                    txtTotalQuantity.getText().toString(),
-                    String.valueOf(totalAmount),
-                    selectedSchemeId,
-                    String.valueOf(discountAddition),
-                    String.valueOf(strTotalAmount),
-                    strPaymentMode,
-                    ""
-            );
-
-            if(isInserted)
-            {
-                Toast.makeText(getActivity().getApplicationContext(),
-                        "Order Inserted into DB", Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
-                Toast.makeText(getActivity().getApplicationContext(),
-                        "Something went wrong.", Toast.LENGTH_SHORT).show();
-            }
-
-            if(isNetworkAvailable())
-            {
-                ConfirmOrderAsync confirmOrderAsync = new ConfirmOrderAsync();
-                confirmOrderAsync.execute();
-            }
-        }
-        catch (Exception e)
-        {
-            e.getMessage();
-        }
-    }*/
 
     class DownloadSchemeAsync extends AsyncTask<String, Void, String>
     {
@@ -1399,6 +1574,7 @@ implements ConfirmOrderSchemeRecyclerAdapter.onItemClickListner{
                     addItemsForOrderList.clear();
                     schemeIdList.clear();
                     showSchemeList.clear();
+                    schemeDiscountList.clear();
                     //confirmOrderSchemeDetailsAdapter.notifyDataSetChanged();
                     tempItemList.clear();
                     //confirmOrderRecyclerAdapter.notifyDataSetChanged();
@@ -1486,7 +1662,7 @@ implements ConfirmOrderSchemeRecyclerAdapter.onItemClickListner{
         guestNamePI.setValue(edtGuestName.getText().toString());
         guestMobileNoPI.setValue(edtGuestContactNo.getText().toString());
         guestAddressPI.setValue(edtGuestAddress.getText().toString());
-        schemeIdPI.setValue(selectedSchemeId);
+        schemeIdPI.setValue(selectedSchemeId.replace("0,", ""));
         totalBillAmountPI.setValue(String.valueOf(totalAmount));
         totalDiscountAmountPI.setValue(String.valueOf(discountAddition));
         finalBillAmountPI.setValue(String.valueOf(strTotalAmount));
