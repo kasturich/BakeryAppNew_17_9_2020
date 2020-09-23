@@ -1103,9 +1103,38 @@ implements ConfirmOrderSchemeRecyclerAdapter.onItemClickListner{
                                     "dd/MM/yyyy", Locale.US);
                             //String currentDate = dateFormat1.format(new Date());
                             Date endDate = dateFormat1.parse(strEndDate);
+                            Date fromDate = dateFormat1.parse(strFromDate);
+                            Date toDate = dateFormat1.parse(selectedDate);
 
                             String currentDate = selectedDate;
                             System.out.println(dateFormat1.format(endDate));
+
+                            if(fromDate.compareTo(toDate) * toDate.compareTo(endDate) >= 0)
+                            {
+                                System.out.println("current date " + toDate+" is between "
+                                        +fromDate + " and " + endDate);
+
+                                schemeDetails = new SchemeDetails(
+                                    schemeDetailsList.get(j).getCompanyId(),
+                                    schemeDetailsList.get(j).getSchemeId(),
+                                    schemeDetailsList.get(j).getCategoryId(),
+                                    schemeDetailsList.get(j).getCategory(),
+                                    schemeDetailsList.get(j).getOutletId(),
+                                    schemeDetailsList.get(j).getOutletName(),
+                                    schemeDetailsList.get(j).getDiscount(),
+                                    schemeDetailsList.get(j).getFromDate(),
+                                    schemeDetailsList.get(j).getToDate(),
+                                    "1");
+                                showSchemeList.add(schemeDetails);
+                            }
+
+                            /*if (dateFormat1.parse(currentDate).before
+                                    (dateFormat1.parse(strEndDate))) {
+
+                                System.out.println("currentDate before " + currentDate);
+                                System.out.println("strEndDate before " + strEndDate);
+                            }
+
                             if (dateFormat1.parse(currentDate).after
                                     (dateFormat1.parse(strEndDate))) {
 
@@ -1127,7 +1156,7 @@ implements ConfirmOrderSchemeRecyclerAdapter.onItemClickListner{
                                         "1"
                                 );
                                 showSchemeList.add(schemeDetails);
-                            }
+                            }*/
                         }
                         catch (Exception e)
                         {
